@@ -13,12 +13,17 @@ namespace Kopy
         public String Path { get; set; }
         public Int64 Size { get; set; }
         public String Sum { get; set; }
-        public String NamedPath { get; set; }
+        public String NamedPath 
+        { 
+            get
+            {
+                return Name + "\\" + Path;
+            }
+        }
         public FileObj(String FileName, String FilePath)
         {
             this.Name = FileName;
             this.Path = FilePath;
-            this.NamedPath = FilePath + "\\" + FileName;
 
             try
             {
@@ -26,11 +31,17 @@ namespace Kopy
             }
             catch(FileNotFoundException)
             {
+                LocalLog.Instance.MakeEvent("FileNotFoundException Raised on " + NamedPath, "FileObj:FileObj", "ERROR");
                 // null everything out
+                Name = String.Empty;
+                Path = String.Empty;
             }
-            catch(IOException)
+            catch(IOException ioe)
             {
-                
+                LocalLog.Instance.MakeEvent("Generic IOException Raised on " + NamedPath + "InnerText: " + ioe.StackTrace, "FileObj:FileObj", "ERROR");
+                // null everything out
+                Name = String.Empty;
+                Path = String.Empty;
             }
 
         }

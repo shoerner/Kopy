@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kopy
 {
@@ -13,11 +9,11 @@ namespace Kopy
         public String Component { get; set; }
         public DateTime CalledTime { get; set; }
         public int CallingThread { get; set; }
+        public String TimeBias { get; set; }
         
         public const String LogOpen = @"<![LOG[";
         public const String LogClose = @"]LOG]!>";
-        public const String FullTimeBias = TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now).ToString();
-        public const String TimeBias = FullTimeBias.Substring(0, FullTimeBias.IndexOf(':'));
+        private String FullTimeBias = TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now).ToString();
         
         /// <summary>
         /// Creates a basic event to be filled later
@@ -28,6 +24,7 @@ namespace Kopy
             Severity = "INFO";
             Component = "GenericApplication";
             CalledTime = DateTime.Now;
+            TimeBias = FullTimeBias.Substring(0, FullTimeBias.IndexOf(':'));
             CallingThread = System.Threading.Thread.CurrentThread.ManagedThreadId;
         }
         /// <summary>
@@ -41,6 +38,7 @@ namespace Kopy
             Severity = "INFO";
             this.Component = Component;
             CalledTime = DateTime.Now;
+            TimeBias = FullTimeBias.Substring(0, FullTimeBias.IndexOf(':'));
             CallingThread = System.Threading.Thread.CurrentThread.ManagedThreadId;
         }
         /// <summary>
@@ -55,6 +53,7 @@ namespace Kopy
             this.Severity = Severity.ToUpper();
             this.Component = Component;
             CalledTime = DateTime.Now;
+            TimeBias = FullTimeBias.Substring(0, FullTimeBias.IndexOf(':'));
             CallingThread = System.Threading.Thread.CurrentThread.ManagedThreadId;
         }
         /// <summary>
